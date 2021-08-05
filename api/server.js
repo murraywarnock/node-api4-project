@@ -1,33 +1,29 @@
-const express = require('express'); // importing a CommonJS module
+const express = require('express');
 const helmet = require('helmet');
-// const hubsRouter = require('./hubs/hubs-router.js');
+const userRouter = require('./user-router.js');
 
 const server = express();
 
-server.use(express.json()); // req.body {}
-server.use(helmet()); // helmet() returns a callback (req, res, next)
-// server.use('/api/hubs', (req, res, next) => {next()}, hubsRouter);
+server.use(express.json());
+server.use(helmet()); 
+server.use('/api', (req, res, next) => {next()}, userRouter);
 
 server.get('/', (req, res, next) => {
   res.send(`
-    <h2>web 44 is da best!!!</h2>
-    <p>Welcome to the web 44 is da best!!!</p>
+    <h1>Module 4 Project</h1>
+    <h2>Web44, Unit 4, Sprint 1</h2>
+    <p>Murray Warnock</p>
+    <p>August 5, 2021</p>
   `);
 });
 
 server.use('*', (req, res, next) => {
-  // catch all, 404 error middleware
-  // calling 'next' with an argument sends the argument
-  // to the error-handling middleware below
   console.log(`hitting ${req.method} ${req.baseUrl}`);
-  next({ status: 404, message: 'not found' }); // this object becomes the "err" in the midd below
+  next({ status: 404, message: 'not found' });
 });
 
-server.use((err, req, res, next) => { // error handling middleware
-  // when someone else before calls next pasing an arg,
-  // this thing shoots back a response to the client if anything goes wrong
-  // in ANY of the middlewares that preceed this one
-  res.status(err.status || 500).json({ message: `HORROR: ${err.message}` });
+server.use((err, req, res, next) => { 
+  res.status(err.status || 500).json({ message: `ERROR: ${err.message}` });
 });
 
 module.exports = server;
