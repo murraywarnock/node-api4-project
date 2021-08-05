@@ -6,7 +6,7 @@ const server = express();
 
 server.use(express.json());
 server.use(helmet()); 
-server.use('/api', (req, res, next) => {next()}, userRouter);
+server.use('/api/', (req, res, next) => {next()}, userRouter);
 
 server.get('/', (req, res, next) => {
   res.send(`

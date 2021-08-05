@@ -16,7 +16,8 @@ const db = {
 
 module.exports = {
     find,
-    add
+    add,
+    login
 };
 
 function find() {
@@ -24,6 +25,15 @@ function find() {
 }
 
 function  add(newUser) {
-    db.push(newUser)
+    db.Users.push(newUser)
     return newUser;
+}
+
+function  login(creds) {
+    const okUser = db.Users.find(user => user.username === creds.username && user.password === creds.password)
+    if (okUser) {
+        return okUser;
+    } else {
+        return "not found";
+    }
 }
